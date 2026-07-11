@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}{{ site_name }} — Original Art, Straight From the Easel{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="topbar">
+  ✋ Handmade + hand-painted · Shipping across India · DM to claim a piece before it's gone
+</div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu">☰</button>
+
+    <a href="{{ url_for('index') }}" class="brand">
+      <span class="brand-mark">A</span>
+      <span class="brand-text">Art of <em>Aadhusivs</em></span>
+    </a>
+
+    <nav class="main-nav" id="mainNav">
+      <a href="{{ url_for('index') }}">Home</a>
+      <div class="nav-dropdown">
+        <span>Shop by Category ▾</span>
+        <div class="dropdown-panel">
+          {% for slug, label in categories %}
+          <a href="{{ url_for('index') }}?category={{ slug }}">{{ label }}</a>
+          {% endfor %}
+        </div>
+      </div>
+      <a href="{{ ig_url }}" target="_blank" rel="noopener">Our Instagram</a>
+      <a href="#contact-block">Contact / Custom Orders</a>
+    </nav>
+
+    <div class="header-actions">
+      <a class="btn btn-ghost" href="{{ ig_url }}" target="_blank" rel="noopener">📸 Follow</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-wrap">
+        {% for category, message in messages %}
+          <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer" id="contact-block">
+  <div class="footer-grid">
+    <div class="footer-col">
+      <div class="brand footer-brand">
+        <span class="brand-mark">A</span>
+        <span class="brand-text">Art of <em>Aadhusivs</em></span>
+      </div>
+      <p>Original paintings, sketches and custom portraits made by hand. Every piece is one of one — once it's gone, it's gone.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      {% for slug, label in categories %}
+      <a href="{{ url_for('index') }}?category={{ slug }}">{{ label }}</a>
+      {% endfor %}
+    </div>
+    <div class="footer-col">
+      <h4>Get in touch</h4>
+      <a href="{{ ig_url }}" target="_blank" rel="noopener">Instagram: @{{ ig_handle }}</a>
+      <a href="https://wa.me/{{ wa_number }}" target="_blank" rel="noopener">WhatsApp: +{{ wa_number }}</a>
+      <a href="{{ url_for('admin_login') }}">Owner login</a>
+    </div>
+    <div class="footer-col">
+      <h4>How to buy</h4>
+      <p>No online checkout here — tap <strong>DM to Buy</strong> on any piece, or send a quick inquiry, and we'll sort out price, shipping and payment directly with you.</p>
+    </div>
+  </div>
+  <div class="footer-bottom">© {{ 2026 }} Art of Aadhusivs · Made with paint, pixels and a little chaos.</div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/{{ wa_number }}" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 32 32" width="28" height="28" fill="currentColor"><path d="M16 3C9.4 3 4 8.4 4 15c0 2.4.7 4.6 1.9 6.5L4 29l7.7-1.8c1.9 1 4 1.6 6.3 1.6 6.6 0 12-5.4 12-12S22.6 3 16 3zm0 21.8c-2 0-3.9-.5-5.5-1.5l-.4-.2-4.6 1.1 1.1-4.5-.3-.4A9.7 9.7 0 0 1 6.2 15c0-5.4 4.4-9.8 9.8-9.8s9.8 4.4 9.8 9.8-4.4 9.8-9.8 9.8zm5.4-7.3c-.3-.1-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1.1 2.8 1.2 3c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg>
+</a>
+
+<div class="modal-overlay" id="inquiryOverlay">
+  <div class="modal-card">
+    <button class="modal-close" id="inquiryClose" aria-label="Close">✕</button>
+    <h3>Quick Inquiry</h3>
+    <p class="modal-sub" id="inquiryProductLine">Tell us how to reach you and we'll follow up.</p>
+    <form id="inquiryForm">
+      <input type="hidden" name="product_id" id="inquiryProductId">
+      <label>Your name
+        <input type="text" name="name" required placeholder="e.g. Priya Sharma">
+      </label>
+      <label>Phone / Instagram handle / Email
+        <input type="text" name="contact" required placeholder="e.g. +91 98765 43210 or @yourhandle">
+      </label>
+      <label>Message (optional)
+        <textarea name="message" rows="3" placeholder="Any size, colour or delivery preferences?"></textarea>
+      </label>
+      <button type="submit" class="btn btn-primary btn-block">Send Inquiry</button>
+      <p class="modal-note">We'll reply here or on Instagram/WhatsApp — whichever you shared.</p>
+    </form>
+    <div class="modal-success" id="inquirySuccess" hidden>
+      <p>✅ Got it! We'll DM you shortly.</p>
+      <a class="btn btn-ghost" href="{{ ig_dm_url }}" target="_blank" rel="noopener">Message us on Instagram now →</a>
+    </div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>
