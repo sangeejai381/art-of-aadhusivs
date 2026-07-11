@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Owner Login — {{ site_name }}{% endblock %}
+{% block content %}
+<section class="auth-wrap">
+  <form method="POST" class="auth-card">
+    <h2>Owner Login</h2>
+    <p class="modal-sub">Manage your products and see who's DM'd/inquired.</p>
+    <label>Username
+      <input type="text" name="username" required autofocus>
+    </label>
+    <label>Password
+      <input type="password" name="password" required>
+    </label>
+    <button type="submit" class="btn btn-primary btn-block">Log In</button>
+  </form>
+</section>
+{% endblock %}

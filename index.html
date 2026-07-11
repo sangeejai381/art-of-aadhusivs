@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="hero">
+  <div class="hero-blob"></div>
+  <div class="hero-inner">
+    <p class="eyebrow">Original art · Made by hand · One of one</p>
+    <h1>Every piece here<br>started as a <em>blank page.</em></h1>
+    <p class="hero-sub">Paintings, sketches, resin art and custom portraits by Aadhusivs. No mass production, no reprints of the same piece twice — see something you love, DM before someone else does.</p>
+    <div class="hero-actions">
+      <a href="#shop" class="btn btn-primary">Explore All Art 🎨</a>
+      <a href="{{ ig_url }}" target="_blank" rel="noopener" class="btn btn-outline">See Process on Instagram →</a>
+    </div>
+  </div>
+</section>
+
+<nav class="category-strip">
+  <a href="{{ url_for('index') }}" class="{{ 'active' if not active_category else '' }}">All ✨</a>
+  {% for slug, label in categories %}
+  <a href="{{ url_for('index') }}?category={{ slug }}" class="{{ 'active' if active_category == slug else '' }}">{{ label }}</a>
+  {% endfor %}
+</nav>
+
+{% if new_arrivals %}
+<section class="shelf">
+  <div class="shelf-head">
+    <h2>New Arrivals <span class="brush">fresh off the easel</span></h2>
+  </div>
+  <div class="product-row">
+    {% for p in new_arrivals %}
+      {% include "_product_card.html" %}
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<section class="shelf" id="shop">
+  <div class="shelf-head">
+    <h2>{% if active_category %}{{ category_dict.get(active_category, active_category) }}{% else %}All Products{% endif %}</h2>
+    <span class="count">{{ products|length }} piece{{ 's' if products|length != 1 else '' }}</span>
+  </div>
+
+  {% if products %}
+  <div class="product-grid">
+    {% for p in products %}
+      {% include "_product_card.html" %}
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <p>No pieces here yet — new art incoming. Follow along on Instagram to see it as it's made.</p>
+  </div>
+  {% endif %}
+</section>
+
+{% endblock %}

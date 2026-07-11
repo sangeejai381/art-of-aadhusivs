@@ -1,0 +1,29 @@
+<label>Name
+  <input type="text" name="name" value="{{ p.name if p is defined else '' }}" required>
+</label>
+<label>Description
+  <textarea name="description" rows="3">{{ p.description if p is defined else '' }}</textarea>
+</label>
+<div class="form-row">
+  <label>Price (₹)
+    <input type="number" name="price" value="{{ p.price if p is defined else '' }}" required min="0">
+  </label>
+  <label>Original / Strike-through Price (₹, optional)
+    <input type="number" name="original_price" value="{{ p.original_price if p is defined and p.original_price else '' }}" min="0">
+  </label>
+</div>
+<label>Category
+  <select name="category">
+    {% for slug, label in categories %}
+    <option value="{{ slug }}" {{ 'selected' if p is defined and p.category == slug }}>{{ label }}</option>
+    {% endfor %}
+  </select>
+</label>
+<label>Image
+  <input type="file" name="image" accept="image/*">
+</label>
+<div class="form-row checkboxes">
+  <label class="checkbox-label"><input type="checkbox" name="is_new" {{ 'checked' if p is defined and p.is_new }}> Mark as New</label>
+  <label class="checkbox-label"><input type="checkbox" name="is_featured" {{ 'checked' if p is defined and p.is_featured }}> Feature on homepage</label>
+  <label class="checkbox-label"><input type="checkbox" name="is_sold" {{ 'checked' if p is defined and p.is_sold }}> Sold out</label>
+</div>
